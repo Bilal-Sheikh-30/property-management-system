@@ -1,13 +1,15 @@
+{% extends "layout.html" %}
+{% block stylehead %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/book_appointment.css' %}">
 
+<link href="https://fonts.googleapis.com/css2?family=Bree+Serif&display=swap" rel="stylesheet">
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>appointment</title>
-</head>
-<body>
+{% endblock stylehead %}
+{% block title %} Book Appointment{% endblock %}
+
+{% block content %}
+<div class="book_appointment">
     <h2>Book an Appointment</h2>
   {% if messages %}
     {% for message in messages %}
@@ -25,5 +27,6 @@
 
     <button type="submit">Book Appointment</button>
   </form>
-</body>
-</html>
+</div>
+
+  {% endblock content %}

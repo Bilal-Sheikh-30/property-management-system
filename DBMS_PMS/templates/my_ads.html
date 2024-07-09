@@ -1,0 +1,44 @@
+{% extends "dashboard.html" %}
+{% load static %}
+{% comment %} property cards {% endcomment %}
+{% block my_ads %}
+<link rel="stylesheet" href="{% static 'css/my_ads.css' %}">
+{% endblock %}
+{% block content %}
+{% endblock %}
+{% block propcard %}
+     
+{% if properties %}
+<div class="container mt-4"> <!-- Added margin-top to the container -->
+    <div class="row">
+        {% for property in properties %}
+        <div class="col-md-3 mb-4"> <!-- Each property takes 1/4th of the row -->
+            <div class="card custom-card"> 
+                {% if property.images.all %}
+                <img src="{{ property.images.all.0.images.url }}" alt="Property Image" class="card-img-top fixed-image">
+                {% endif %}
+                <div class="card-body">
+                  <h5 class="card-title">{{ property.address }}</h5>
+                  <p class="card-text">
+                    <p><strong>Price:</strong> {{ property.price }}</p>
+                    <p><strong>City:</strong> {{ property.city.city_name }}</p>
+                    <p><strong>Town:</strong> {{ property.town.town_name }}</p>
+                    <p><strong>No of Bedrooms: {{property.number_of_bedrooms}}</strong></p>
+                    <p><strong>No of Bathrooms: {{property.number_of_bathrooms}}</strong></p>
+                  </p>
+                  <a href="{% url 'property_detail' property.id %}" class="btn btn-primary">Show Description</a>
+                  {% if user == property.user %}
+                  <div class="btn-container mt-3">
+                  <a href="{% url 'edit_property' property.id %}" class="btn btn-warning mt-3">Edit</a>
+                  <a href="{% url 'prop_delete' property.id %}" class="btn btn-danger mt-3">Delete</a></div>
+                  {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% else %}
+<p>No properties to display</p>
+{% endif %}
+{% endblock %}

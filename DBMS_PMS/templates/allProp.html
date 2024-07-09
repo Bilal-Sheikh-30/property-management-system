@@ -1,0 +1,133 @@
+{% extends "layout.html" %}
+{% block stylehead %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/allProp.css' %}">
+{% endblock stylehead %}
+{% block content %}
+<div>
+    {% comment %} dropdown for filter {% endcomment %}
+    <div class="dropdown-cities-town">
+      <div class="dropdown-container">
+        <div class="dropdown">
+    
+    <form  method="post">
+      {% csrf_token %}
+      <h2>Search properties in Pakistan</h2>
+      <label for="city">City:</label>
+      <select id="city" name="city">
+          <option value="">Any city</option>
+          {% for city in cities %}
+          <option value="{{ city.cityID }}" {% if city.cityID|stringformat:"s" == applied_filters.city|stringformat:"s" %}selected{% endif %}>
+            {{ city.city_name }}
+        </option>
+          {% endfor %}
+      </select>
+
+      <label for="prop_type">Property Type:</label>
+      <select name="prop_type" id="prop_type">
+        <option value="">Any</option>
+        <option value="Plot" {% if applied_filters.prop_type == "Plot" %}selected{% endif %}>Plot</option>
+        <option value="House" {% if applied_filters.prop_type == "House" %}selected{% endif %}>House</option>
+        <option value="Appartment" {% if applied_filters.prop_type == "Appartment" %}selected{% endif %}>Appartment</option>
+      </select>
+
+      <button type="submit" class='btn btn-success'>Filter</button>
+  </form>
+    
+  </div>
+  </div>
+  </div>
+    {% comment %} Property cards {% endcomment %}
+    {% if properties %}
+<div class="container mt-4"> <!-- Added margin-top to the container -->
+    <div class="row">
+        {% for property in properties %}
+        <div class="col-md-3 mb-4"> <!-- Each property takes 1/4th of the row -->
+            <div class="card custom-card"> 
+                {% if property.images.all %}
+                <img src="{{ property.images.all.0.images.url }}" alt="Property Image" class="card-img-top fixed-image">
+                {% endif %}
+                <div class="card-body">
+                  <h5 class="card-title">{{ property.address }}</h5>
+                  <p class="card-text">
+                    <p><strong>Price:</strong> {{ property.price }}</p>
+                    <p><strong>City:</strong> {{ property.city.city_name }}</p>
+                    <p><strong>Town:</strong> {{ property.town.town_name }}</p>
+                    <p><strong>No of Bedrooms: {{property.number_of_bedrooms}}</strong></p>
+                    <p><strong>No of Bathrooms: {{property.number_of_bathrooms}}</strong></p>
+                  </p>
+                  <a href="{% url 'property_detail' property.id %}" class="btn btn-primary">Show Description</a>
+                  <!-- {% if user == property.user %}
+                  <div class="btn-container mt-3">
+                  <a href="{% url 'edit_property' property.id %}" class="btn btn-warning mt-3">Edit</a>
+                  <a href="{% url 'prop_delete' property.id %}" class="btn btn-danger mt-3">Delete</a></div>
+                  {% endif %} -->
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+                </div>
+            </div>
+        </div>
+        
+    
+    <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-center">
+            {% if properties.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page=1{% if filters.city_id %}&city={{ filters.city_id }}{% endif %}{% if filters.prop_type %}&prop_type={{ filters.prop_type }}{% endif %}" aria-label="First">
+                        <span aria-hidden="true">&laquo;&laquo;</span>
+                        <span class="sr-only">First</span>
+                    </a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ properties.previous_page_number }}{% if filters.city_id %}&city={{ filters.city_id }}{% endif %}{% if filters.prop_type %}&prop_type={{ filters.prop_type }}{% endif %}" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                </li>
+            {% else %}
+                <li class="page-item disabled">
+                    <a class="page-link" href="#" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                </li>
+            {% endif %}
+
+            {% for num in properties.paginator.page_range %}
+                {% if properties.number == num %}
+                    <li class="page-item active"><a class="page-link" href="#">{{ num }} <span class="sr-only">(current)</span></a></li>
+                {% else %}
+                    <li class="page-item"><a class="page-link" href="?page={{ num }}{% if filters.city_id %}&city={{ filters.city_id }}{% endif %}{% if filters.prop_type %}&prop_type={{ filters.prop_type }}{% endif %}">{{ num }}</a></li>
+                {% endif %}
+            {% endfor %}
+
+            {% if properties.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ properties.next_page_number }}{% if filters.city_id %}&city={{ filters.city_id }}{% endif %}{% if filters.prop_type %}&prop_type={{ filters.prop_type }}{% endif %}" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ properties.paginator.num_pages }}{% if filters.city_id %}&city={{ filters.city_id }}{% endif %}{% if filters.prop_type %}&prop_type={{ filters.prop_type }}{% endif %}" aria-label="Last">
+                        <span aria-hidden="true">&raquo;&raquo;</span>
+                        <span class="sr-only">Last</span>
+                    </a>
+                </li>
+            {% else %}
+                <li class="page-item disabled">
+                    <a class="page-link" href="#" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </li>
+            {% endif %}
+        </ul>
+    </nav>
+    {% else %}
+    <p>No properties to display</p>
+    {% endif %}
+</div>
+{% endblock %}

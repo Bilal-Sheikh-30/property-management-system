@@ -7,6 +7,9 @@ from django.contrib import messages
 from django.http import JsonResponse
 from userReg import views
 from datetime import datetime, timedelta
+from django.utils import timezone
+from django.core.paginator import Paginator
+
 
 # Create your views here.
 
@@ -39,6 +42,7 @@ def submit_property(request):
         city_id = request.POST['city']
         town_id = request.POST['town']
         description = request.POST['description']
+        prop_type = request.POST['prop_type']
         
         city = City.objects.get(pk=city_id)
         town = Town.objects.get(pk=town_id)
@@ -54,7 +58,8 @@ def submit_property(request):
             city=city,
             town=town,
             user=user,
-            description=description
+            description=description,
+            prop_type = prop_type
         )
 
         for image in request.FILES.getlist('images'):
@@ -73,27 +78,109 @@ def get_towns(request):
     towns = list(Town.objects.filter(city_id=city_id).values('townID', 'town_name'))
     return JsonResponse(towns, safe=False)
 
-# it will display 9 most recent properties from db in desending order
+
 def property_list(request):
+    applied_filters = {'city': '', 'prop_type': ''}  # Default filter values
     if request.method == 'POST':
         filtered_cityID = request.POST.get('city')
-        properties = Property.objects.filter(city_id = filtered_cityID)
-        return render(request,'property_list.html',{'properties': properties})
-    properties = Property.objects.all().order_by('-posted_on')[:9]
-    cities = City.objects.all()
-    return render(request, 'property_list.html', {'properties': properties, 'cities': cities , 'show_dropdown': True})
+        prop_type = request.POST.get('prop_type')
+        filters = {}
+        if filtered_cityID:
+            filters['city_id'] = filtered_cityID
+            applied_filters['city'] = filtered_cityID
+        if prop_type:
+            filters['prop_type'] = prop_type
+            applied_filters['prop_type'] = prop_type
+        
+        properties = Property.objects.all()
+        filtered_properties = properties.filter(**filters)
+        return render(request, 'allProp.html', {
+            'properties': filtered_properties,
+            'cities': City.objects.all(),
+            'applied_filters': applied_filters
+        })
+    
+    properties = Property.objects.all().order_by('-posted_on')[:8]
+    return render(request, 'property_list.html', {
+        'properties': properties,
+        'cities': City.objects.all(),
+        'applied_filters': applied_filters
+    })
+
 
 def list_all_properties(request):
-    properties = Property.objects.all().order_by('-posted_on')
-    return render(request, 'property_list.html', {'properties': properties})
+    applied_filters = {'city': '', 'prop_type': ''}  # Default filter values
+    if request.method == 'POST':
+        filtered_cityID = request.POST.get('city')
+        prop_type = request.POST.get('prop_type')
+        filters = {}
+        if filtered_cityID:
+            filters['city_id'] = filtered_cityID
+            applied_filters['city'] = filtered_cityID
+        if prop_type:
+            filters['prop_type'] = prop_type
+            applied_filters['prop_type'] = prop_type
+        
+        properties = Property.objects.all()
+        filtered_properties = properties.filter(**filters)
 
+        return render(request, 'allProp.html', {
+            'properties': filtered_properties,
+            'cities': City.objects.all(),
+            'applied_filters': applied_filters
+        })
+
+    properties_list = Property.objects.all().order_by('-posted_on')
+    paginator = Paginator(properties_list, 8)  # Show 8 properties per page
+
+    page_number = request.GET.get('page')
+    properties = paginator.get_page(page_number)
+
+    return render(request, 'allProp.html', {'properties': properties, 'cities': City.objects.all()})
 def property_detail(request, property_id):
     property = get_object_or_404(Property, pk=property_id)
     return render(request, 'property_detail.html', {'property': property})
 
 def search(request):
     cities = City.objects.all()
-    return render(request,'search.html',{'search':True, 'cities': cities})
+    properties = Property.objects.all()
+
+    if request.method == "POST":
+        facing = request.POST.get('facing')
+        price = request.POST.get('price')
+        bedrooms = request.POST.get('bedrooms')
+        bathrooms = request.POST.get('bathrooms')
+        sale_type = request.POST.get('sale_type')
+        city_id = request.POST.get('city')
+        town_id = request.POST.get('town')
+        prop_type = request.POST.get('prop_type')
+
+        # Build a dictionary for filters
+        filters = {}
+        if facing:
+            filters['facing'] = facing
+        if price:
+            filters['price__lte'] = price
+        if bedrooms:
+            filters['number_of_bedrooms'] = bedrooms
+        if bathrooms:
+            filters['number_of_bathrooms'] = bathrooms
+        if sale_type:
+            filters['sale_type'] = sale_type
+        if city_id:
+            filters['city_id'] = city_id
+        if town_id:
+            filters['town_id'] = town_id
+        if prop_type:
+            filters['prop_type'] = prop_type
+
+
+        # Apply filters
+        properties = properties.filter(**filters)
+        return render(request,'allProp.html', {'properties': properties})
+
+    return render(request, 'search.html', {'cities': cities, 'search': True, 'properties': properties})
+
 
 
 # it will display properties listed by logined user
@@ -101,7 +188,7 @@ def search(request):
 def user_properties(request):
     user = request.user
     properties = Property.objects.filter(user=user)
-    return render(request, 'property_list.html', {'properties': properties})
+    return render(request, 'my_ads.html', {'properties': properties})
 
 @login_required
 def prop_delete(request, prop_id):
@@ -126,6 +213,7 @@ def edit_property(request, prop_id):
         prop.city = City.objects.get(pk=request.POST['city'])
         prop.town = Town.objects.get(pk=request.POST['town'])
         prop.description = request.POST['description']
+        prop.prop_type = request.POST['prop_type']
 
         # Handle images
         if 'images' in request.FILES:
@@ -147,17 +235,7 @@ def edit_property(request, prop_id):
     }
     return render(request, 'edit_property.html', context)
 
-
-
-
-
-
-
-
-
-
-
-
+@login_required
 def book_appointment(request, property_id):
     property = get_object_or_404(Property, id=property_id)
 
@@ -172,7 +250,18 @@ def book_appointment(request, property_id):
         user = CustomUser.objects.get(id=user_id)
 
         # Parse the appointment date and time
-        appointment_datetime = datetime.strptime(appointment_date_and_time, '%Y-%m-%dT%H:%M')
+        try:
+            appointment_datetime = timezone.make_aware(datetime.strptime(appointment_date_and_time, '%Y-%m-%dT%H:%M'), timezone.get_current_timezone())
+        except ValueError:
+            messages.error(request, 'Invalid date and time format.')
+            return render(request, 'book_appointment.html', {'property': property})
+
+        # Check if the appointment date and time is in the past
+        current_time = timezone.now()
+        if appointment_datetime <= current_time:
+            messages.error(request, 'You cannot book an appointment for a past date.')
+            return render(request, 'book_appointment.html', {'property': property})
+
         start_time = appointment_datetime
         end_time = appointment_datetime + timedelta(hours=1)
 
@@ -183,32 +272,47 @@ def book_appointment(request, property_id):
 
         # No conflicts, save the appointment
         appointment = Appointment(
-            appointment_date_and_time=appointment_date_and_time,
+            appointment_date_and_time=appointment_datetime,
             visiting_user=visiting_user,
             propID=prop,
             userID=user
         )
         appointment.save()
-
-        return redirect('appointment_success')  # Redirect to a success page or some other page
+        messages.success(request,'Your appointment has been booked.')
 
     return render(request, 'book_appointment.html', {'property': property})
+
+
+
+
+
+
+
+
+
+
 
 @login_required
 def appointment_success(request):
     return render(request, 'appointment_success.html')
 
 
-
-
 @login_required
 def view_appointments(request):
+    current_time = timezone.now()
+    
     # Appointments for properties posted by the logged-in user
     properties_posted_by_user = Property.objects.filter(user=request.user)
-    appointments_for_user_properties = Appointment.objects.filter(propID__in=properties_posted_by_user)
+    appointments_for_user_properties = Appointment.objects.filter(
+        propID__in=properties_posted_by_user,
+        appointment_date_and_time__gt=current_time
+    )
 
     # Appointments booked by the logged-in user to visit other properties
-    appointments_booked_by_user = Appointment.objects.filter(visiting_user=request.user)
+    appointments_booked_by_user = Appointment.objects.filter(
+        visiting_user=request.user,
+        appointment_date_and_time__gt=current_time
+    )
 
     context = {
         'appointments_for_user_properties': appointments_for_user_properties,
@@ -218,17 +322,18 @@ def view_appointments(request):
     return render(request, 'view_appointments.html', context)
 
 
-# @login_required
-# def cancel_appointment(request, appointment_id):
-#     appointment = get_object_or_404(Appointment, id=appointment_id)
-
-#     # Only allow the user who booked the appointment to cancel it
-#     if appointment.visiting_user == request.user:
-#         appointment.delete()
-#         messages.success(request, 'Appointment cancelled successfully.')
-#         print('Appointment cancelled successfully.')
-#     else:
-#         messages.error(request, 'You do not have permission to cancel this appointment.')
-#         print('You do not have permission to cancel this appointment.')
-
 #     return redirect('view_appointments')
+@login_required
+def cancel_appointment(request, appointment_id):
+    appointment = get_object_or_404(Appointment, pk=appointment_id)
+
+    # Only allow the user who booked the appointment to cancel it
+    if appointment.visiting_user == request.user:
+        appointment.delete()
+        messages.success(request, 'Appointment cancelled successfully.')
+        print('Appointment cancelled successfully.')
+    else:
+        messages.error(request, 'You do not have permission to cancel this appointment.')
+        print('You do not have permission to cancel this appointment.')
+
+    return redirect('view_appointments')

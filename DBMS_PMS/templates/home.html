@@ -1,28 +1,12 @@
 {% extends "layout.html" %}
-{% comment %} {% extends "layout.html" %}
-{% block stylehead %}
-{% load static %}
-<link rel="stylesheet" href="{% static 'css/home.css' %}">
-    {% endblock %}
-{% block title %}HOME{% endblock %}
-
-{% block content %}
-<div class="video-background">
-    <video autoplay muted loop>
-        <source src="{% static 'videos/Bg_video1.mp4' %}" type="video/mp4">
-        Your browser does not support the video tag.
-    </video>
-</div>
-    
-
-{% endblock %} 
- {% endcomment %}
 {% block stylehead %}
 {% load static %}
 <link rel="stylesheet" href="{% static 'css/home.css' %}">
 <script src="{% static 'js/home.js' %}" defer></script>
 <link href="https://fonts.googleapis.com/css2?family=Bree+Serif&display=swap" rel="stylesheet">
-    {% endblock %}
+{% block propertylist %}
+{% endblock propertylist %}
+    {% endblock stylehead %}
 {% block title %}HOME{% endblock %}
 
 {% block content %}
@@ -33,14 +17,14 @@
         <h1>Welcome to Propfolio</h1>
         <p>Your one-step solution for efficient property management!</p>
         </div>
-    </section>
+  
 
-    <section>
-        <div class="container">
-            <div class="card">
+        
+        <div class="home-container">
+            <div class="home-card">
               <img class="background-home" src="{% static 'images/homeimage1.jpeg' %}"" alt="Description of image">
       
-              <div class="card-content">
+              <div class="home-card-content">
                 <div class="profile-image">
                   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-house">
                       <path d="M3 9.5L12 2l9 7.5v10.5a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2v-5h-4v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9.5z" />
@@ -54,10 +38,10 @@
               <div class="backdrop"></div>
             </div>
       
-            <div class="card">
+            <div class="home-card">
               <img class="background-home" src="{% static 'images/homeimage2.jpeg' %}" alt="">
       
-              <div class="card-content">
+              <div class="home-card-content">
                 <div class="profile-image">
                   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-house">
                       <path d="M3 9.5L12 2l9 7.5v10.5a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2v-5h-4v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9.5z" />
@@ -71,10 +55,10 @@
               <div class="backdrop"></div>
             </div>
       
-            <div class="card">
+            <div class="home-card">
               <img class="background-home" src="{% static 'images/homeimage3.jpeg' %}" alt="">
       
-              <div class="card-content">
+              <div class="home-card-content">
                 <div class="profile-image">
                   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-house">
                       <path d="M3 9.5L12 2l9 7.5v10.5a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2v-5h-4v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9.5z" />
@@ -88,10 +72,10 @@
               <div class="backdrop"></div>
             </div>
       
-            <div class="card">
+            <div class="home-card">
               <img class="background-home" src="{% static 'images/homeimage4.jpeg' %}" alt="">
       
-              <div class="card-content">
+              <div class="home-card-content">
                 <div class="profile-image">
                   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-house">
                       <path d="M3 9.5L12 2l9 7.5v10.5a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2v-5h-4v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9.5z" />
@@ -105,10 +89,10 @@
               <div class="backdrop"></div>
             </div>
       
-            <div class="card">
+            <div class="home-card">
               <img class="background-home" src="{% static 'images/homeimage5.jpeg' %}" alt="">
       
-              <div class="card-content">
+              <div class="home-card-content">
                 <div class="profile-image">
                   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-house">
                       <path d="M3 9.5L12 2l9 7.5v10.5a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2v-5h-4v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9.5z" />
@@ -122,10 +106,10 @@
               <div class="backdrop"></div>
             </div>
             <!-- added by me -->
-            <div class="card">
+            <div class="home-card">
               <img class="background-home" src="{% static 'images/homeimage6.jpeg' %}" alt="">
       
-              <div class="card-content">
+              <div class="home-card-content">
                 <div class="profile-image">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-house">
                       <path d="M3 9.5L12 2l9 7.5v10.5a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2v-5h-4v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9.5z" />
@@ -141,12 +125,11 @@
             </div>
           </div>
         </div>
+
+    
+     
     </section>
 
     
-
-{% endblock %}
-{% block propcard %}
-{% endblock %}
-
+{% endblock content %}
 

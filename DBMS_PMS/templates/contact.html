@@ -3,46 +3,60 @@
 {% load static %}
 
 {% block title %}
-    Contact Us
+    Who We Are
 {% endblock %}
 
 {% block stylehead %}
     <link rel="stylesheet" href="{% static 'css/contact.css' %}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
 {% endblock %}
 
 {% block content %}
-    <section id="contact-us" class="text-center">
-        <div class="bg-image">
-            <div class="overlay">
-                <h1 class="heading">Contact Us</h1>
-                <div class="container mt-5">
-                    <div class="row justify-content-center">
-                        <div class="col-md-8">
-                            <form id="contactForm">
-                                <div class="mb-3">
-                                    <label for="firstName" class="form-label">First Name</label>
-                                    <input type="text" class="form-control" id="firstName" required>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="lastName" class="form-label">Last Name</label>
-                                    <input type="text" class="form-control" id="lastName" required>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="email" class="form-label">Email address</label>
-                                    <input type="email" class="form-control" id="email" required>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="subject" class="form-label">Subject</label>
-                                    <input type="text" class="form-control" id="subject" required>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="message" class="form-label">Message</label>
-                                    <textarea class="form-control" id="message" rows="3" required style="height: 50px;"></textarea>
-                                </div>
-                                <button type="submit" class="btn btn-primary">Submit</button>
-                            </form>
-                        </div>
-                    </div>
+    <section class="contact-us">
+        
+        <h1>Who We Are</h1>
+        <p>Welcome to Propfolio, where we showcase our expertise in real estate. Our team is dedicated to helping you find your dream property. Explore our listings and get in touch with our experts.</p>
+        
+        <div class="team-members">
+            <div class="card">
+                <img src="{% static 'images/homeimage5.jpeg' %}" alt="Person 1">
+                <h4>Hamza Nasir</h4>
+                <p>Hamza is a seasoned real estate expert with over 10 years of experience. He loves helping families find their perfect home.</p>
+                <div class="social-icons">
+                    <a href="https://www.instagram.com/johndoe" target="_blank"><i class="bi bi-instagram icon"></i></a>
+                    <a href="https://www.linkedin.com/in/johndoe/" target="_blank"><i class="bi bi-linkedin icon"></i></a>
+                    <a href="https://www.facebook.com/johndoe" target="_blank"><i class="bi bi-facebook icon"></i></a>
+                </div>
+            </div>
+            <div class="card">
+                <img src="{% static 'images/homeimage4.jpeg' %}" alt="Person 2">
+                <h4>Abdus Samad</h4>
+                <p>Samad has a passion for real estate and excels at negotiating deals. He is dedicated to ensuring his clients get the best value for their money.</p>
+                <div class="social-icons">
+                    <a href="https://www.instagram.com/janesmith" target="_blank"><i class="bi bi-instagram icon"></i></a>
+                    <a href="https://www.linkedin.com/in/janesmith/" target="_blank"><i class="bi bi-linkedin icon"></i></a>
+                    <a href="https://www.facebook.com/janesmith" target="_blank"><i class="bi bi-facebook icon"></i></a>
+                </div>
+            </div>
+            <div class="card">
+                <img src="{% static 'images/homeimage3.jpeg' %}" alt="Person 3">
+                <h4>Talha Bin Sajid</h4>
+                <p>Talha is known for his extensive knowledge of commercial properties. He has helped numerous clients grow their real estate portfolios.</p>
+                <div class="social-icons">
+                    <a href="https://www.instagram.com/bobjohnson" target="_blank"><i class="bi bi-instagram icon"></i></a>
+                    <a href="https://www.linkedin.com/in/bobjohnson/" target="_blank"><i class="bi bi-linkedin icon"></i></a>
+                    <a href="https://www.facebook.com/bobjohnson" target="_blank"><i class="bi bi-facebook icon"></i></a>
+                </div>
+            </div>
+            <div class="card">
+                <img src="{% static 'images/homeimage2.jpeg' %}" alt="Person 4">
+                <h4>Bilal Ahmed</h4>
+                <p>Bilal has a knack for understanding clients' needs and matching them with the perfect property. He is dedicated to client satisfaction.</p>
+                <div class="social-icons">
+                    <a href="https://www.instagram.com/alicebrown" target="_blank"><i class="bi bi-instagram icon"></i></a>
+                    <a href="https://www.linkedin.com/in/alicebrown/" target="_blank"><i class="bi bi-linkedin icon"></i></a>
+                    <a href="https://www.facebook.com/alicebrown" target="_blank"><i class="bi bi-facebook icon"></i></a>
                 </div>
             </div>
         </div>

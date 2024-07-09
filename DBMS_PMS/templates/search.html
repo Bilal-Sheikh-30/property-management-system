@@ -1,58 +1,69 @@
 {% extends "layout.html" %}
-
+{% block stylehead %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/search.css' %}">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+{% endblock stylehead %}
+{% block title %}Search{% endblock %}
 {% block content %}
 {% if search %}
+
 <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
-    <label for="facing">Facing:</label>
-    <select name="facing" id="facing">
-      <option value="east">East</option>
-      <option value="north">North</option>
-      <option value="west">West</option>
-      <option value="south">South</option>
-    </select>
+    <div class="form-container">
+        <label for="facing">Facing:</label>
+        <select name="facing" id="facing">
+            <option value="east">East</option>
+            <option value="north">North</option>
+            <option value="west">West</option>
+            <option value="south">South</option>
+        </select>
 
+        <label for="Maximum_Price">Maximum Price in pkr:</label>
+        <input type="number" name="price" id="Maxprice">
 
-    <label for="Maximum_Price">Maximum Price in pkr:</label>
-    <input type="number" name="price" id="Maxprice">
+        <div class="form-row">
+            <div class="form-group">
+                <label for="bedrooms">Number of Bedrooms:</label>
+                <input type="number" name="bedrooms" id="bedrooms">
+            </div>
+            <div class="form-group">
+                <label for="bathrooms">Number of Bathrooms:</label>
+                <input type="number" name="bathrooms" id="bathrooms">
+            </div>
+        </div>
 
-    <label for="bedrooms">Number of Bedrooms:</label>
-    <input type="number" name="bedrooms" id="bedrooms" >
+        <label for="sale_type">Sale Type:</label>
+        <select name="sale_type" id="sale_type">
+            <option value="rent">Rent</option>
+            <option value="sale" selected>Sale</option>
+        </select>
 
-    <label for="bathrooms">Number of Bathrooms:</label>
-    <input type="number" name="bathrooms" id="bathrooms" >
+        <div class="form-row">
+            <div class="form-group">
+                <label for="city">City:</label>
+                <select id="city" name="city">
+                    <option value="">Select a city</option>
+                    {% for city in cities %}
+                        <option value="{{ city.cityID }}">{{ city.city_name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="town">Town:</label>
+                <select id="town" name="town">
+                    <option value="">Select a town</option>
+                </select>
+            </div>
+        </div>
 
-    <label for="sale_type">Sale Type:</label>
-    <select name="sale_type" id="sale_type">
-      <option value="rent">Rent</option>
-      <option value="sale" selected>Sale</option>
-    </select>
-
-
-
-    <label for="city">City:</label>
-    <select id="city" name="city">
-        <option value="">Select a city</option>
-        {% for city in cities %}
-            <option value="{{ city.cityID }}">{{ city.city_name }}</option>
-        {% endfor %}
-    </select>
-
-    <label for="town">Town:</label>
-    <select id="town" name="town">
-        <option value="">Select a town</option>
-    </select>
-
-
-    <button type="submit" class='btn btn-warning'>SEARCH</button>
+        <button type="submit" class='btn btn-warning'>SEARCH</button>
+    </div>
 </form>
-
-
 {% else %}
 display results
 {% endif %}
 {% endblock content %}
-
 
 {% block scriptBlock %}
 <script type="text/javascript">

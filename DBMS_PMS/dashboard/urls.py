@@ -35,7 +35,8 @@ urlpatterns = [
     path('property/edit/<int:prop_id>/', views.edit_property, name='edit_property'),
     path('book-appointment/<int:property_id>/', views.book_appointment, name='book_appointment'),
     path('view_appointments/', views.view_appointments, name='view_appointments'),
-    path('appointment-success/', views.appointment_success, name='appointment_success'),
+    # path('appointment-success/', views.appointment_success, name='appointment_success'),
     # path('cancel_appointment/<int:appointment_id>/', views.cancel_appointment, name='cancel_appointment'),
+    path('cancel_appointment/<int:appointment_id>/', views.cancel_appointment, name='cancel_appointment'),
     path('logout/', views.logout_view, name='logout'),
 ]

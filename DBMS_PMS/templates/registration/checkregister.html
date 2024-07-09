@@ -7,7 +7,12 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f0f0f0;
+            position: relative;
+            height: 100%;
+            /* background: url('login.jpg') no-repeat center center; */
+            background: url('/static/images/dashboard.jpg') no-repeat center center;
+            background-size: cover;
+
         }
         h1{
             text-align:center;
@@ -16,10 +21,11 @@
             width: 400px;
             margin: 40px auto;
             padding: 50px;
-            background-color:#fff;
-            border: 1px solid #ddd;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            /* background-color:#fff; */
+            /* border: 1px solid #ddd; */
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
             border-radius:20px;
+            backdrop-filter: blur(10px);
         }
 
         label {
@@ -89,7 +95,11 @@
             <input type="password" id="confirm-password" name="confirm-password" required><br><br>
             <input type="submit" value="submit"> 
         </form>
-        <p id="error-message"></p>
+        {% if messages %}
+        {% for message in messages %}
+            <p style="color: red;">{{ message }}</p>
+        {% endfor %}
+        {% endif %}
         <p>Already have an account? <a href="{% url 'logined' %}">Login now</a></p>
     </div>
 

@@ -1,0 +1,64 @@
+
+body {
+  position: relative;
+            height: 70vh;
+            background: url('../images/book_appointment.jpg') no-repeat center center;
+            background-size: cover;
+}
+
+.book_appointment {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 600px;
+  /* border: 2px solid #ccc; */
+  margin: 50px auto;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.7);
+  /* background-color: #f9f9f9; */
+  backdrop-filter: blur(10px);
+}
+.book_appointment form p,
+.book_appointment form label {
+  font-weight: 600; /* Slightly bold */
+}
+.book_appointment h2 {
+  font-family: "Bree Serif", serif;
+}
+
+.book_appointment form {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  align-items: center;
+}
+
+.book_appointment form label,
+.book_appointment form input,
+.book_appointment form button {
+  width: 100%;
+  max-width: 400px;
+}
+
+.book_appointment form input,
+.book_appointment form button {
+  margin: 10px 0;
+}
+
+.book_appointment button {
+  background-color: #4CAF50; /* Green background */
+  color: white; /* White text */
+  padding: 15px 20px; /* Some padding */
+  border: none; /* Remove borders */
+  border-radius: 5px; /* Rounded corners */
+  cursor: pointer; /* Pointer/hand icon on hover */
+  font-size: 16px; /* Increase font size */
+  transition: background-color 0.3s, transform 0.3s; /* Animation on hover */
+}
+
+.book_appointment button:hover {
+  background-color: #45a049; /* Darker green on hover */
+  transform: scale(1.05); /* Slightly larger on hover */
+}

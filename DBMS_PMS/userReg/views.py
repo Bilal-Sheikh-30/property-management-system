@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
 from .models import CustomUser  # Assuming your model is in the same app
 from dashboard import views
+from django.contrib import messages
 def home(request):
   return render(request,'home.html')
 
@@ -32,7 +33,7 @@ def signup(request):
       return redirect('property_list')  # Redirect to the home page after successful login
     else:
       # Handle user creation error (e.g., display message)
-      print('User creation failed. Please try again.')
+      messages.error(request,'User creation failed. Please try again.')
 
   return render(request, 'registration/checkregister.html')
 
@@ -51,6 +52,6 @@ def logined(request):
       return redirect('property_list')  # Redirect to the home page after successful login
     else:
       # Handle unsuccessful login attempt (e.g., display error message)
-      print('Invalid login credentials. Please try again.')
+      messages.error(request,'invalid credentials')
 
   return render(request, 'registration/checklogin.html')

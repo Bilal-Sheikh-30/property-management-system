@@ -1,32 +1,122 @@
-{% comment %}  property list page will be redirected to this page to display description. {% endcomment %}
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Property Details</title>
-</head>
-<body>
+{% extends "layout.html" %}
+{% block stylehead %}
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/propertydetail.css' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <!-- Add Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .carousel {
+            width: 60%;
+            height: 400px;
+            margin: auto;
+        }
+        .carousel-inner {
+            height: 100%;
+        }
+        .carousel-inner img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .carousel-control-prev-icon,
+        .carousel-control-next-icon {
+            background-color: transparent;
+            width: 50px;
+            height: 50px;
+        }
+        .carousel-control-prev,
+        .carousel-control-next {
+            width: 20%;
+            opacity :1;
+            color: blak;
+        }
+        .carousel-control-prev:hover,
+        .carousel-control-next:hover {
+            background-color: transparent;
+        }
+        .container {
+            margin-top: 20px;
+        }
+    </style>
+{% endblock stylehead %}
+<title>{% block title %}Property Detail{% endblock %}</title>
+
+{% block content %}
+<div class="container">
     <h1>Property Details</h1>
     <h2>{{ property.address }}</h2>
-    <p><strong>Facing:</strong> {{ property.facing }}</p>
-    <p><strong>Price:</strong> {{ property.price }}</p>
-    <p><strong>Bedrooms:</strong> {{ property.number_of_bedrooms }}</p>
-    <p><strong>Bathrooms:</strong> {{ property.number_of_bathrooms }}</p>
-    <p><strong>Sale Type:</strong> {{ property.sale_type }}</p>
-    <p><strong>City:</strong> {{ property.city.city_name }}</p>
-    <p><strong>Town:</strong> {{ property.town.town_name }}</p>
-    <p><strong>Description:</strong> {{ property.description }}</p>
-    <p><strong>Posted on:</strong> {{ property.posted_on }}</p>
-    <p><strong>Posted by:</strong> {{ property.user.first_name }} {{ property.user.last_name }}</p>
-    <div>
-        <h3>Images:</h3>
-        <ul>
+
+    <!-- Bootstrap Carousel -->
+    <div id="propertyCarousel" class="carousel slide" data-ride="carousel" data-interval="false">
+        <div class="carousel-inner">
             {% for image in property.images.all %}
-            <li><img src="{{ image.images.url }}" alt="Property Image" width="200"></li>
+            <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                <img src="{{ image.images.url }}" class="d-block w-100" alt="Property Image">
+            </div>
             {% endfor %}
-        </ul>
+        </div>
+        <a class="carousel-control-prev" href="#propertyCarousel" role="button" data-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+        </a>
+        <a class="carousel-control-next" href="#propertyCarousel" role="button" data-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+        </a>
     </div>
+
+    <table class="property-details mt-4">
+        <tr>
+            <th>Facing</th>
+            <td>{{ property.facing }}</td>
+        </tr>
+        <tr>
+            <th>Price</th>
+            <td>{{ property.price }}</td>
+        </tr>
+        <tr>
+            <th>Bedrooms</th>
+            <td>{{ property.number_of_bedrooms }}</td>
+        </tr>
+        <tr>
+            <th>Bathrooms</th>
+            <td>{{ property.number_of_bathrooms }}</td>
+        </tr>
+        <tr>
+            <th>Sale Type</th>
+            <td>{{ property.sale_type }}</td>
+        </tr>
+        <tr>
+            <th>City</th>
+            <td>{{ property.city.city_name }}</td>
+        </tr>
+        <tr>
+            <th>Town</th>
+            <td>{{ property.town.town_name }}</td>
+        </tr>
+        <tr>
+            <th>Description</th>
+            <td>{{ property.description }}</td>
+        </tr>
+        <tr>
+            <th>Posted on</th>
+            <td>{{ property.posted_on }}</td>
+        </tr>
+        <tr>
+            <th>Posted by</th>
+            <td>{{ property.user.first_name }} {{ property.user.last_name }}</td>
+        </tr>
+    </table>
+
     {% if user != property.user and user.is_authenticated %}
-        <a href="{% url 'book_appointment' property.id%}">Book an Appointment</a>
+        <div class="appointment mt-3">
+            <a href="{% url 'book_appointment' property.id %}" class="btn btn-primary">Book an Appointment</a>
+        </div>
     {% endif %}
-</body>
-</html>
+</div>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+{% endblock content %}
+

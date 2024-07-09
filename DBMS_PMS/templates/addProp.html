@@ -1,63 +1,91 @@
+{% extends "dashboard.html" %}
+{% load static %}
 {% comment %} form to add property {% endcomment %}
-
-<!DOCTYPE html>
-<html>
-<head>
-    <title>LIST PROPERTY</title>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-</head>
-<body>
-    <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        <label for="facing">Facing:</label>
-        <select name="facing" id="facing">
-          <option value="east">East</option>
-          <option value="north">North</option>
-          <option value="west" selected>West</option>
-          <option value="south">South</option>
-        </select>
-
-        <label for="price">Price in pkr:</label>
-        <input type="number" name="price" id="price" required>
-
-        <label for="bedrooms">Number of Bedrooms:</label>
-        <input type="number" name="bedrooms" id="bedrooms" required>
-
-        <label for="bathrooms">Number of Bathrooms:</label>
-        <input type="number" name="bathrooms" id="bathrooms" required>
-
-        <label for="sale_type">Sale Type:</label>
-        <select name="sale_type" id="sale_type">
-          <option value="rent">Rent</option>
-          <option value="sale" selected>Sale</option>
-        </select>
-
-        <label for="address">Address:</label>
-        <input type="text" name="address" id="address" placeholder="House#, Block / Society" required>
+{% block my_ads %}
+<link rel="stylesheet" href="{% static 'css/addprop.css' %}">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+{% endblock %}
 
 
-        <label for="city">City:</label>
-        <select id="city" name="city">
-            <option value="">Select a city</option>
-            {% for city in cities %}
-                <option value="{{ city.cityID }}">{{ city.city_name }}</option>
-            {% endfor %}
-        </select>
 
-        <label for="town">Town:</label>
-        <select id="town" name="town">
-            <option value="">Select a town</option>
-        </select>
+    {% block content %}
 
-        <label for="images">Images:</label>
-        <input type="file" id="images" name="images" multiple required>
+    <div class="form-container">
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            
+            <label for="facing">Facing:</label>
+            <select name="facing" id="facing">
+              <option value="east">East</option>
+              <option value="north">North</option>
+              <option value="west" selected>West</option>
+              <option value="south">South</option>
+            </select>
 
-        <label for="description">Description</label>
-        <textarea name="description" id="description" required></textarea>
-
-        <button type="submit">Submit Property</button>
-    </form>
-
+            <label for="prop_type">Property Type:</label>
+            <select name="prop_type" id="prop_type">
+              <option value="">property type</option>
+              <option value="Plot">Plot</option>
+              <option value="House">House</option>
+              <option value="Appartment">Appartment</option>
+            </select>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="price">Price in pkr:</label>
+                    <input type="number" name="price" id="price" required>
+                </div>
+                <div class="form-group">
+                    <label for="bedrooms">Number of Bedrooms:</label>
+                    <input type="number" name="bedrooms" id="bedrooms" required>
+                </div>
+            </div>
+    
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="bathrooms">Number of Bathrooms:</label>
+                    <input type="number" name="bathrooms" id="bathrooms" required>
+                </div>
+                <div class="form-group">
+                    <label for="sale_type">Sale Type:</label>
+                    <select name="sale_type" id="sale_type">
+                      <option value="rent">Rent</option>
+                      <option value="sale" selected>Sale</option>
+                    </select>
+                </div>
+            </div>
+    
+            <label for="address">Address:</label>
+            <input type="text" name="address" id="address" placeholder="House#, Block / Society" required>
+    
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="city">City:</label>
+                    <select id="city" name="city">
+                        <option value="">Select a city</option>
+                        {% for city in cities %}
+                            <option value="{{ city.cityID }}">{{ city.city_name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="town">Town:</label>
+                    <select id="town" name="town">
+                        <option value="">Select a town</option>
+                    </select>
+                </div>
+            </div>
+    
+            <label for="images">Images:</label>
+            <input type="file" id="images" name="images" multiple required>
+    
+            <label for="description">Description</label>
+            <textarea name="description" id="description" required></textarea>
+    
+            <button type="submit">Submit Property</button>
+        </form>
+    </div>
+    
     <script type="text/javascript">
         $(document).ready(function(){
             $('#city').change(function(){
@@ -82,5 +110,4 @@
             });
         });
     </script>
-</body>
-</html>
+    {% endblock %}
