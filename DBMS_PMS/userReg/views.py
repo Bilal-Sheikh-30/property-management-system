@@ -16,24 +16,46 @@ def signup(request):
     cnic = request.POST.get('cnic')
 
     # Validate data (optional)
-    # ... add validation logic here ...
+    input_status = 'pass'
 
-    user = CustomUser.objects.create_user(
-      username = email,
-      email=email,
-      password=password,
-      first_name=first_name,
-      last_name=last_name,
-      cnic=cnic,
-      phone_number=phone_number
-    )
+    # chk if cnic and phone num are numbers
+    if cnic.isnumeric() != True:
+      input_status = 'invalid'
+      messages.error(request, 'This CNIC is invalid.')
+    elif phone_number.isnumeric() != True:
+      input_status = 'invalid'
+      messages.error(request, 'This Phone No is invalid.')
 
-    if user is not None:
-      login(request, user)  # Login the user
-      return redirect('property_list')  # Redirect to the home page after successful login
-    else:
-      # Handle user creation error (e.g., display message)
-      messages.error(request,'User creation failed. Please try again.')
+    # chk if cnic alreagy exists
+    if CustomUser.objects.filter(cnic=cnic).exists():
+      input_status = 'invalid'
+      messages.error(request, 'This CNIC is already registered.')
+    elif CustomUser.objects.filter(email=email).exists():
+      input_status = 'invalid'
+      messages.error(request, 'This email is already registered.')
+    elif CustomUser.objects.filter(phone_number=phone_number).exists():
+      input_status = 'invalid'
+      messages.error(request, 'This Phone Number is already registered.')
+
+    
+    if input_status == 'pass':
+      user = CustomUser.objects.create_user(
+        username = email,
+        email=email,
+        password=password,
+        first_name=first_name,
+        last_name=last_name,
+        cnic=cnic,
+        phone_number=phone_number
+      )
+      if user is not None:
+        login(request, user)  # Login the user
+        return redirect('property_list')  # Redirect to the home page after successful login
+      else:
+        # Handle user creation error (e.g., display message)
+        messages.error(request,'User creation failed. Please try again.')
+
+    
 
   return render(request, 'registration/checkregister.html')
 

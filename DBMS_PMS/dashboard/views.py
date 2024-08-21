@@ -25,6 +25,7 @@ def contactview(request):
 
 def aboutview(request):
     return render(request,'about.html')
+    
 @login_required
 def logout_view(request):
     logout(request)
@@ -80,10 +81,11 @@ def get_towns(request):
 
 
 def property_list(request):
-    applied_filters = {'city': '', 'prop_type': ''}  # Default filter values
+    applied_filters = {'city': '', 'prop_type': '','sale_type':''}  # Default filter values
     if request.method == 'POST':
         filtered_cityID = request.POST.get('city')
         prop_type = request.POST.get('prop_type')
+        sale_type = request.POST.get('sale_type')
         filters = {}
         if filtered_cityID:
             filters['city_id'] = filtered_cityID
@@ -91,6 +93,9 @@ def property_list(request):
         if prop_type:
             filters['prop_type'] = prop_type
             applied_filters['prop_type'] = prop_type
+        if sale_type:
+            filters['sale_type'] = sale_type
+            applied_filters['sale_type'] = sale_type
         
         properties = Property.objects.all()
         filtered_properties = properties.filter(**filters)
@@ -109,10 +114,11 @@ def property_list(request):
 
 
 def list_all_properties(request):
-    applied_filters = {'city': '', 'prop_type': ''}  # Default filter values
+    applied_filters = {'city': '', 'prop_type': '','sale_type':''}  # Default filter values
     if request.method == 'POST':
         filtered_cityID = request.POST.get('city')
         prop_type = request.POST.get('prop_type')
+        sale_type = request.POST.get('sale_type')
         filters = {}
         if filtered_cityID:
             filters['city_id'] = filtered_cityID
@@ -120,10 +126,12 @@ def list_all_properties(request):
         if prop_type:
             filters['prop_type'] = prop_type
             applied_filters['prop_type'] = prop_type
+        if sale_type:
+            filters['sale_type'] = sale_type
+            applied_filters['sale_type'] = sale_type
         
         properties = Property.objects.all()
         filtered_properties = properties.filter(**filters)
-
         return render(request, 'allProp.html', {
             'properties': filtered_properties,
             'cities': City.objects.all(),
@@ -199,7 +207,9 @@ def prop_delete(request, prop_id):
     return render(request, 'prop_delete_confirmation.html',{'prop': prop})
 
 
+
 @login_required
+
 def edit_property(request, prop_id):
     prop = get_object_or_404(Property, pk=prop_id, user=request.user)
     
@@ -262,12 +272,33 @@ def book_appointment(request, property_id):
             messages.error(request, 'You cannot book an appointment for a past date.')
             return render(request, 'book_appointment.html', {'property': property})
 
+        # check if user already has an upcoming appointment for the same property
         start_time = appointment_datetime
         end_time = appointment_datetime + timedelta(hours=1)
+
+        if Appointment.objects.filter(
+            visiting_user=visiting_user,
+            propID=prop,
+            appointment_date_and_time__gt=timezone.now()).exists():
+            messages.error(request, 'You already have an upcoming appointment for this property.')
+            return render(request, 'book_appointment.html', {'property': property})
 
         # Check for existing appointments within the same time range
         if Appointment.objects.filter(propID=prop, appointment_date_and_time__range=(start_time, end_time)).exists():
             messages.error(request, 'This time slot is already booked. Please choose another time.')
+            return render(request, 'book_appointment.html', {'property': property})
+        
+        # Calculate the end time of the desired appointment
+        # start_time = appointment_datetime
+        # end_time = appointment_datetime + timedelta(hours=1)
+
+        # Check if the user has any appointments that overlap with the desired time slot for any property other than the current one
+        if Appointment.objects.filter(
+            visiting_user=visiting_user,
+            appointment_date_and_time__lt=end_time,
+            appointment_date_and_time__gt=start_time - timedelta(hours=1)
+            ).exclude(propID=prop).exists():
+            messages.error(request, 'You already have an appointment for another property during this time slot.')
             return render(request, 'book_appointment.html', {'property': property})
 
         # No conflicts, save the appointment
@@ -281,16 +312,6 @@ def book_appointment(request, property_id):
         messages.success(request,'Your appointment has been booked.')
 
     return render(request, 'book_appointment.html', {'property': property})
-
-
-
-
-
-
-
-
-
-
 
 @login_required
 def appointment_success(request):
@@ -331,9 +352,6 @@ def cancel_appointment(request, appointment_id):
     if appointment.visiting_user == request.user:
         appointment.delete()
         messages.success(request, 'Appointment cancelled successfully.')
-        print('Appointment cancelled successfully.')
     else:
         messages.error(request, 'You do not have permission to cancel this appointment.')
-        print('You do not have permission to cancel this appointment.')
-
     return redirect('view_appointments')

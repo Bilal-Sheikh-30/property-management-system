@@ -10,15 +10,15 @@
 
 {% block content %}
 <div class="book_appointment">
-    <h2>Book an Appointment</h2>
+    <h2 style="color: white;">Book an Appointment</h2>
   {% if messages %}
     {% for message in messages %}
-      <p style="color: red;">{{ message }}</p>
+      <p {% if message.tags == 'success' %}style="color: lightgreen;"{% endif %}style="color: white;">{{ message }}</p>
     {% endfor %}
   {% endif %}
   <form method="POST" action="{% url 'book_appointment' property.id %}">
     {% csrf_token %}
-    <label for="appointment_date_and_time">Appointment Date and Time:</label>
+    <label for="appointment_date_and_time" style="color: white;">Appointment Date and Time:</label>
     <input type="datetime-local" id="appointment_date_and_time" name="appointment_date_and_time" required><br><br>
 
     <input type="hidden" id="visiting_user" name="visiting_user" value="{{ request.user.id }}">

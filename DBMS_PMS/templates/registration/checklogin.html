@@ -76,6 +76,9 @@
             text-decoration: underline;
 
         }
+        #regNow{
+            color: navy;
+        }
     </style>
 </head>
 <body>
@@ -96,7 +99,7 @@
         {% endfor %}
         {% endif %}
 
-        <p>Don't have an account? <a href="{% url 'signup' %}">Register now</a></p>
+        <p>Don't have an account? <a href="{% url 'signup' %}" id='regNow'>Register now</a></p>
     </div>
 </body>
 </html>

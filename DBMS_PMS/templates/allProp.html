@@ -30,6 +30,12 @@
         <option value="House" {% if applied_filters.prop_type == "House" %}selected{% endif %}>House</option>
         <option value="Appartment" {% if applied_filters.prop_type == "Appartment" %}selected{% endif %}>Appartment</option>
       </select>
+      <label for="sale_type">Sale Type:</label>
+      <select name="sale_type" id="sale_type">
+        <option value="">Any</option>
+        <option value="rent" {% if applied_filters.sale_type == "rent" %}selected{% endif %}>Rent</option>
+        <option value="sale" {% if applied_filters.sale_type == "sale" %}selected{% endif %}>Sale</option>
+      </select>
 
       <button type="submit" class='btn btn-success'>Filter</button>
   </form>
@@ -127,7 +133,7 @@
         </ul>
     </nav>
     {% else %}
-    <p>No properties to display</p>
+    <center><h3>No properties to display</h3></center>
     {% endif %}
 </div>
 {% endblock %}

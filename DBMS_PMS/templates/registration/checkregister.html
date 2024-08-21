@@ -1,107 +1,258 @@
-<!DOCTYPE html>
+{% comment %} <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Register Page</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            position: relative;
-            height: 100%;
-            /* background: url('login.jpg') no-repeat center center; */
-            background: url('/static/images/dashboard.jpg') no-repeat center center;
-            background-size: cover;
-
-        }
-        h1{
-            text-align:center;
-        }
+      body {
+        font-family: Arial, sans-serif;
+        position: relative;
+        height: 100%;
+        /* background: url('login.jpg') no-repeat center center; */
+        background: url("/static/images/dashboard.jpg") no-repeat center center;
+        background-size: cover;
+      }
+      h1 {
+        text-align: center;
+      }
       .container {
-            width: 400px;
-            margin: 40px auto;
-            padding: 50px;
-            /* background-color:#fff; */
-            /* border: 1px solid #ddd; */
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
-            border-radius:20px;
-            backdrop-filter: blur(10px);
-        }
+        width: 400px;
+        margin: 40px auto;
+        padding: 50px;
+        /* background-color:#fff; */
+        /* border: 1px solid #ddd; */
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
+        border-radius: 20px;
+        backdrop-filter: blur(10px);
+      }
 
-        label {
-            display: block;
-            margin-bottom: 10px;
-        }
+      label {
+        display: block;
+        margin-bottom: 10px;
+      }
 
-        input[type="text"], input[type="email"], input[type="password"], input[type="tel"] {
-            width:95%;
-            height: 40px;
-            margin-bottom: 20px;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius:10px;
-        }
+      input[type="text"],
+      input[type="email"],
+      input[type="password"],
+      input[type="tel"] {
+        width: 95%;
+        height: 40px;
+        margin-bottom: 20px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 10px;
+      }
 
-        input[type="submit"] {
-            width: 100%;
-            height: 40px;
-            background-color: #4CAF50;
-            color: #fff;
-            padding: 10px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
+      input[type="submit"] {
+        width: 100%;
+        height: 40px;
+        background-color: #4caf50;
+        color: #fff;
+        padding: 10px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
 
-        input[type="submit"]:hover {
-            background-color: #3e8e41;
-        }
+      input[type="submit"]:hover {
+        background-color: #3e8e41;
+      }
 
-        #error-message {
-            color: #red;
-            font-size: 14px;
-            margin-top: 10px;
-        }
+      #error-message {
+        color: #red;
+        font-size: 14px;
+        margin-top: 10px;
+      }
 
-        a {
-            text-decoration: none;
-            color: #337ab7;
-        }
+      a {
+        text-decoration: none;
+        color: #337ab7;
+      }
 
-        a:hover {
-            color: #23527c;
-            text-decoration: underline;
-        }
+      a:hover {
+        color: #23527c;
+        text-decoration: underline;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <div class="container">
-        <h1>Register</h1>
-        <form id="register-form" method='post'>
-            {% csrf_token %}
-            <label for="firstname">First Name:</label>
-            <input type="text" id="firstname" name="firstname" required><br><br>
-            <label for="lastname">Last Name:</label>
-            <input type="text" id="lastname" name="lastname" required><br><br>
-            <label for="cnic">CNIC:</label>
-            <input type="text" id="cnic" name="cnic" required maxlength='13'><br><br>
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email" required><br><br>
-            <label for="phone">Phone Number:</label>
-            <input type="tel" id="phone" name="phone" required maxlength='11'><br><br>
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="password" required><br><br>
-            <label for="confirm-password">Confirm Password:</label>
-            <input type="password" id="confirm-password" name="confirm-password" required><br><br>
-            <input type="submit" value="submit"> 
-        </form>
-        {% if messages %}
-        {% for message in messages %}
-            <p style="color: red;">{{ message }}</p>
-        {% endfor %}
-        {% endif %}
-        <p>Already have an account? <a href="{% url 'logined' %}">Login now</a></p>
+      <h1>Register</h1>
+      <form id="register-form" method="post">
+        {% csrf_token %}
+        <label for="firstname">First Name:</label>
+        <input
+          type="text"
+          id="firstname"
+          name="firstname"
+          required
+        /><br /><br />
+        <label for="lastname">Last Name:</label>
+        <input type="text" id="lastname" name="lastname" required /><br /><br />
+        <label for="cnic">CNIC:</label>
+        <input
+          type="text"
+          id="cnic"
+          name="cnic"
+          required
+          maxlength="13"
+        /><br /><br />
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required /><br /><br />
+        <label for="phone">Phone Number:</label>
+        <input
+          type="tel"
+          id="phone"
+          name="phone"
+          required
+          maxlength="11"
+        /><br /><br />
+        <label for="password">Password:</label>
+        <input
+          type="password"
+          id="password"
+          name="password"
+          required
+        /><br /><br />
+        <label for="confirm-password">Confirm Password:</label>
+        <input
+          type="password"
+          id="confirm-password"
+          name="confirm-password"
+          required
+        /><br /><br />
+        <input type="submit" value="submit" />
+      </form>
+      {% if messages %} {% for message in messages %}
+      <p style="color: red">{{ message }}</p>
+      {% endfor %} {% endif %}
+      <p>
+        Already have an account? <a href="{% url 'logined' %}">Login now</a>
+      </p>
     </div>
+  </body>
+</html>
+{% endcomment %}
 
-</body>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SignUp</title>
+    <style>
+      body {
+        background-image: url("/static/images/signupimage.jpg");
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: right;
+        background-attachment: fixed;
+      }
+
+      .container {
+        margin-top: 12vh;
+        margin-left: 14vw;
+        border: 1px solid grey;
+        height: 75vh;
+        /* height: 470px; */
+        width: 70vw;
+        backdrop-filter: blur(15px);
+        padding: 20px;
+        border-radius: 10px;
+      }
+
+      h1 {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        text-align: center;
+        font-size: 3vw;
+        color: black;
+      }
+      input {
+        width: 20vw;
+        height: 4vh;
+        margin-top: 1vh;
+      }
+      label {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        font-size: large;
+        font-weight: bold;
+        margin-top: 3vh;
+        color: #000000;
+      }
+
+      .flex-content {
+        display: flex;
+        justify-content: space-around;
+      }
+      .left,
+      .right {
+        display: flex;
+        flex-direction: column;
+      }
+
+      button {
+        margin-right: 7.5vw;
+        float: right;
+        height: 6vh;
+        width: 8vw;
+        font-size: medium;
+        font-weight: bolder;
+        border: 1px solid black;
+        background-color: silver;
+      }
+
+      button:hover {
+        cursor: pointer;
+        background-color: grey;
+      }
+      #question {
+        font-size: large;
+      }
+      #loginHere {
+        color: navy;
+        text-decoration: none;
+      }
+      #loginHere:hover {
+        text-decoration: underline;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Signup Here</h1>
+      {% if messages %} {% for message in messages %}
+      <p style="color: maroon; text-align: center; font-size:large;">{{ message }}</p>
+      {% endfor %} {% endif %}
+      <form id="register-form" method="post">
+        {% csrf_token %}
+        <div class="flex-content">
+          <div class="left">
+            <label for="firstname">First Name: </label>
+            <input type="text" name="firstname" id="firstname" required />
+            <label for="lastname">Last Name: </label>
+            <input type="text" name="lastname" id="lastname" required />
+            <label for="email">Email</label>
+            <input type="email" name="email" id="email" required />
+            <p id="question">
+              Already have an account?
+              <a href="{% url 'logined' %}" id="loginHere">Login Here!</a>
+            </p>
+          </div>
+
+          <div class="right">
+            <label for="cnic">CNIC:</label>
+            <input type="text" name="cnic" id="cnic" maxlength="13" minlength="13" required />
+            <label for="phone">Phone No:</label>
+            <input type="tel" name="phone" id="phone" maxlength="11" minlength="11" required />
+            <label for="password">Password</label>
+            <input type="password" name="password" id="password" required />
+          </div>
+        </div>
+
+        <button type="submit" value="submit">Register</button>
+        {% comment %} <input type="submit" value="submit" /> {% endcomment %}
+      </form>
+    </div>
+  </body>
 </html>

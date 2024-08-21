@@ -1,19 +1,19 @@
-{% comment %} 2 navbars {% endcomment %}
+{% extends "dashboard.html" %}
 
+{% load static %}
+{% block my_ads %}
+<link rel="stylesheet" href="{% static 'css/del_confirm.css' %}">
 
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>confirmation</title>
-</head>
-<body>
-    <h2>confirm your action.</h2>
+{% endblock my_ads%}
+
+{% block content %}
+<div class="center-content">
+    <h2>Are you Sure?</h2>
     <form  method="post">
         {% csrf_token %}
-        <button>Delete</button>
-        <a href="{% url 'user_properties'%}">cancel</a>
+        <button class="btn btn-danger">Delete</button>
+        <a class="btn btn-success" href="{% url 'user_properties'%}">cancel</a>
 
     </form>
-</body>
-</html>
+</div>    
+    {% endblock %}
