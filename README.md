@@ -28,8 +28,8 @@
 
 A demo video of the project can be found below:
 
-<!-- Replace with your actual video link -->
-<iframe width="560" height="315" src="https://res.cloudinary.com/dacj8pmtm/video/upload/v1744828148/propfolio_demo_v7cdoc.mp4" frameborder="0" allowfullscreen></iframe>
+[![Watch the demo](https://res.cloudinary.com/dacj8pmtm/video/upload/w_600,h_340,c_fill,so_15/propfolio_demo_v7cdoc.jpg)](https://res.cloudinary.com/dacj8pmtm/video/upload/v1744828148/propfolio_demo_v7cdoc.mp4)
+
 
 ---
 
