@@ -29,7 +29,7 @@
 A demo video of the project can be found below:
 
 <!-- Replace with your actual video link -->
-<iframe width="560" height="315" src="/workspaces/property-management-system/propfolio demo.mp4" frameborder="0" allowfullscreen></iframe>
+<iframe width="560" height="315" src="https://res.cloudinary.com/dacj8pmtm/video/upload/v1744828148/propfolio_demo_v7cdoc.mp4" frameborder="0" allowfullscreen></iframe>
 
 ---
 
@@ -48,22 +48,27 @@ A demo video of the project can be found below:
    cd propfolio
 
 2. **Create and Activate Virtual Environment**
-    ```python -m venv venv
+    ```bash
+    python -m venv venv
     source venv/bin/activate  # On Windows: venv\Scripts\activate
 
 3. **Install Project Dependencies**
-    ```pip install -r requirements.txt
+    ```bash
+    pip install -r requirements.txt
 
-3. **Configure Environment Variables**
-    Create a .env file in the root directory (where manage.py exists) and include the following:
-    NAME=your_database_name
-    USER=your_database_user
-    PASSWORD=your_database_password
-    HOST=your_database_host
-    PORT=your_database_port
+3. **Configure Environment Variables**  
+   Create a `.env` file in the root directory (where `manage.py` exists) and include the following:
+
+   - `NAME=your_database_name`
+   - `USER=your_database_user`
+   - `PASSWORD=your_database_password`
+   - `HOST=your_database_host`
+   - `PORT=your_database_port`
 
 5. **Apply Migrations**
-    ```python manage.py migrate
+    ```bash
+    python manage.py migrate
 
 6. **Run the Development Server**
-    ```python manage.py runserver
+    ```bash
+    python manage.py runserver
